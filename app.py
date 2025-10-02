@@ -1,10 +1,11 @@
 python
-from flask import Flask
+from flask import Flask, render_template
+
 app = Flask(_name_)
 
-@app.route("/")
+@app.route('/')
 def home():
-    return "Tournament App is running!"
+    return "Welcome to the Tournament Website!"
 
-if _name_ == "_main_":
-    app.run()
+if _name_ == '_main_':
+    app.run(debug=True)
