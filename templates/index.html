@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <video id="video" width="320" height="240" autoplay></video>
+  <button onclick="capture()">Capture</button>
+  <canvas id="canvas" width="320" height="240" style="display:none;"></canvas>
+
+  <script>
+    const video = document.getElementById('video');
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => { video.srcObject = stream; });
+
+    function capture() {
+      const canvas = document.getElementById('canvas');
+      const context = canvas.getContext('2d');
+      context.drawImage(video, 0, 0, 320, 240);
+      const data = canvas.toDataURL('image/png');
+
+      fetch('/upload', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: 'image=' + encodeURIComponent(data)
+      }).then(res => res.text()).then(alert);
+    }
+  </script>
+</body>
+</html>
